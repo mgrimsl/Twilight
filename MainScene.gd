@@ -15,7 +15,7 @@ func _on_host_pressed():
 	#cam.clear_current()
 
 func _on_join_pressed():
-	peer.create_client("127.0.0.1",123)
+	peer.create_client("20.172.229.169",8080)
 	#peer.create_client("192.168.1.68",123)
 	multiplayer.multiplayer_peer = peer
 	#cam.clear_current()
