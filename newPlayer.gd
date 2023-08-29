@@ -6,6 +6,7 @@ func _ready():
 	$Player.attacked.connect(_on_attack)
 
 
+
 func _physics_process(delta):
 	eDelta = delta
 	if is_multiplayer_authority():
@@ -61,3 +62,5 @@ func _on_timer_timeout():
 func _on_attack(target):
 	pass
 	#print(target)
+	
+

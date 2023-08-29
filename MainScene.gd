@@ -8,14 +8,16 @@ func _ready():
 	pass
 
 func _on_host_pressed():
-	peer.create_server(123)
+	peer.create_server(8080)
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(add_player)
 	add_player(1)
 	#cam.clear_current()
 
 func _on_join_pressed():
-	peer.create_client("20.172.229.169",8080)
+	print('join')
+	peer.create_client("104.209.135.74",8080)
+	#peer.create_client("localhost",8080)
 	#peer.create_client("192.168.1.68",123)
 	multiplayer.multiplayer_peer = peer
 	#cam.clear_current()
@@ -25,8 +27,6 @@ func add_player(id = 1):
 	player.name = str(id)
 	$PlayersMan.add_child(player)
 
-
-
 func exit_game(id):
 	multiplayer.peer_disconnected.connect(del_player)
 	del_player(id)
@@ -35,5 +35,9 @@ func del_player(id):
 	rpc("_del_player", id)
 
 @rpc("any_peer", "call_local") func _del_player(id):
-	get_node(str(id)).queue_free()
+	if(is_multiplayer_authority()):
+		get_node(str(id)).queue_free()
 
+func _on_quit_pressed():
+	$PlayersMan.authJoined = false
+	exit_game($PlayersMan.authRPC.name) # Replace with function body.
