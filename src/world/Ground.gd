@@ -15,6 +15,7 @@ func _input_event(_camera, event, mPosition, _normal, _shape_idx):
 	mPosition.y = 1
 	mouse = mPosition
 	if event.is_action_pressed("Click"):
+		#print(mouse)
 		emit_signal("move", mouse)
 
 

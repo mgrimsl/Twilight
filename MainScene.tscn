@@ -54,6 +54,9 @@ func _process(delta):
 script = ExtResource("1_wpbrr")
 player_scene = ExtResource("2_vj3hd")
 
+[node name="GUI" parent="." instance=ExtResource("8_klb7r")]
+offset_bottom = 1080.0
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
 light_energy = 3.0
@@ -77,10 +80,6 @@ shape = SubResource("BoxShape3D_jff5m")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 2.12004e-14, 3.68538e-14, -4.12792e-14, 0.276527, 0.961006, 1.01827e-14, -0.961006, 0.276527, 0, 11.5694, 1)
-script = ExtResource("1_5afgx")
-
-[node name="CameraNode" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 11.5694, 1)
 script = ExtResource("1_5afgx")
 
 [node name="Ground" type="StaticBody3D" parent="."]
@@ -115,39 +114,14 @@ scale = Vector2(0.3, 0.3)
 
 [node name="Timer" type="Timer" parent="Enemy"]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Join" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-text = "Join"
-
-[node name="Host" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-text = "Host"
-
-[node name="Quit" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-text = "Quit
-"
-
 [node name="PlayersMan" type="Node3D" parent="."]
 script = ExtResource("8_oyfto")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="PlayersMan"]
-_spawnable_scenes = PackedStringArray("res://src/champions/PlayerRpc.tscn", "res://src/champions/Rain/AutoAttack/auto_attack.tscn", "res://src/champions/Rain/Abilities/ability_1.tscn")
+_spawnable_scenes = PackedStringArray("res://src/champions/Rain/AutoAttack/auto_attack.tscn", "res://src/champions/Rain/Abilities/ability_1.tscn", "res://src/champions/PlayerRpc.tscn")
 spawn_path = NodePath("..")
 
-[node name="GUI" parent="PlayersMan" instance=ExtResource("8_klb7r")]
-offset_left = 58.0
-offset_top = -2.0
-offset_right = 58.0
-offset_bottom = 1078.0
-scale = Vector2(2, 1.5)
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
 
 [connection signal="ability1" from="Ground" to="." method="_on_ground_ability_1"]
 [connection signal="timeout" from="Enemy/Timer" to="Enemy" method="_on_timer_timeout"]
-[connection signal="pressed" from="VBoxContainer/Join" to="." method="_on_join_pressed"]
-[connection signal="pressed" from="VBoxContainer/Host" to="." method="_on_host_pressed"]
-[connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]

@@ -13,11 +13,12 @@ var target
 func init(pos, e):
 		target = e
 		start = Vector3(pos.x,1,pos.z) 
-		dest = position
+		dest = target.position
 		start += start.direction_to(dest) * 1
 		transform.origin = start
-	
+
 func _physics_process(_delta):
+	pass
 	dest = target.position
 	if(constantTravel == true):
 		fixedTravel()
@@ -37,5 +38,5 @@ func travel():
 
 func _on_body_entered(body):
 	if body == target:
-		body.hit(damage, name, get_parent())
+		body.hit(damage, body, name)
 		call_deferred("queue_free")

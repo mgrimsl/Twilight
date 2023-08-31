@@ -12,21 +12,20 @@ var left = false
 var right = false
 var up = false
 var down = false
+var locked = true
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	size = get_viewport().size
+	size = get_viewport().get_visible_rect().size
+	print(size)
 	leftBound = size.x * .10
 	rightBound = size.x - leftBound
 	topBound = size.y * .10
 	bottomBound = size.y - topBound
-
-
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	moving = false #turns off camera movment
+	moving = !locked #turns off camera movment
 	if(moving == true):
 		if(right == true):
 			moveRight()
@@ -44,6 +43,8 @@ func _input(event):
 		transform.origin.y -= .5
 	if Input.is_action_just_pressed("ZoomOut"):
 		transform.origin.y += .5
+	if Input.is_action_just_pressed("CameraLock"):
+		locked = !locked 
 		
 func _notification(note):
 	match note:

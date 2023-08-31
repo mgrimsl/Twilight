@@ -1,9 +1,10 @@
 extends Node3D
 
 var eDelta = 0
+var isAuth = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$Player.attacked.connect(_on_attack)
+	pass
 
 
 func _physics_process(delta):
@@ -13,51 +14,50 @@ func _physics_process(delta):
 			pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	pass
-
 
 func _enter_tree():
-	set_multiplayer_authority(name.to_int())
-	#if !is_multiplayer_authority():
-	#	$"Camera3D".clear_current()
-	#else:
-	#	$"Camera3D".make_current()
-	get_parent().playerAdded(self, is_multiplayer_authority())
-
-@rpc("unreliable", "any_peer", "call_local") func updatePos(id,pos, moving, velo, dest, attacking, speed):
-	if !is_multiplayer_authority():
-		if name == id:
-			#print(velo)
-			velo.y=0
-			$Player.position = lerp(position, pos, 1)
-			$Player.moving = moving;
-			$Player.velocity = velo
-			$Player.look_at(dest, Vector3.UP)
-			$Player.Speed = speed
-			#print($Player, " is moving? ", $Player.moving)
-			#print(moving)
-			$Player.destination = dest
-			$Player.attacking = attacking
-			$Player.attackMove = false
-			var vpPos = $"../../Camera3D".unproject_position(pos)
-			vpPos.x -= 160
-			vpPos.y -= 220
-			#$Player.moving = true
-			$Player/FloatGUI.position = vpPos
-
-@rpc("unreliable", "any_peer", "call_local") func ability1(dest):
-	if !is_multiplayer_authority():
-		$Player._on_ground_ability_1(dest)
-
-@rpc("unreliable", "any_peer", "call_local") func autoAttack(targetName):
-		var target = (get_parent().get_node(str(targetName)).get_node("Player"))
-		$Player._on_enemy_attacked(target)
+	print("Player: ", name, " Entered the Tree")
 
 func _on_timer_timeout():
-	if is_multiplayer_authority():
-		rpc("updatePos", name, $Player.position, $Player.moving, $Player.velocity, $Player.destination, $Player.attacking, $Player.Speed)
-		
-func _on_attack(target):
 	pass
-	#print(target)
+	
+func _on_player_attacked():
+	rpc("_attacked", str(name))
+
+@rpc("any_peer") func updateState(id,State):
+	if(id == name):
+		$Player.updateMovementState(State["MovementState"])
+		$Player.updateAttkStat(State["AttackState"])
+		
+@rpc("any_peer") func attack(targetId, MovementState):
+	var parent = get_parent()
+	var target = parent.get_node(str(targetId))
+	$Player.target = target.get_node("Player")
+	$Player.updateMovementState(MovementState)
+	$Player.attack()
+	#print($Player.name, " attacked ", $Player.target.name, " at target pos ", $Player.target.get)
+
+@rpc("reliable", "any_peer") func sendChampData(champData):
+	$Player.champData = champData
+	$Player.setBaseStats(champData)
+
+@rpc("any_peer") func _updateDest(id,pos):
+	pass
+@rpc("any_peer") func _attacked(target):
+	pass
+			
+func V2to3(vector2 : Vector2):
+	var vector3 = Vector3.ZERO
+	vector3.x = vector2.x 
+	vector3.z = vector2.y
+	vector3.y=1
+	return vector3
+
+func V3to2(vector3 : Vector3):
+	var vector2 = Vector2.ZERO
+	vector2.x = vector3.x 
+	vector2.y = vector3.z
+	return vector2
+

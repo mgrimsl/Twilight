@@ -80,5 +80,22 @@ text = "100"
 horizontal_alignment = 2
 vertical_alignment = 1
 
+[node name="DebugName" type="RichTextLabel" parent="HBoxContainer/Bars/Bar/Count/BackGround"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -56.0
+offset_top = -114.0
+offset_right = 222.0
+offset_bottom = -35.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 50
+text = "BEBO"
+scroll_active = false
+
 [node name="Counters" type="HBoxContainer" parent="HBoxContainer"]
 layout_mode = 2

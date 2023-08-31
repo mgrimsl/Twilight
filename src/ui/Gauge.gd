@@ -1,10 +1,10 @@
 extends TextureProgressBar
 
-var MaxHealth = 200
-var currentHealth = 200
+var MaxHealth = -1
+var currentHealth = -1
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	max_value = MaxHealth
+	max_value = currentHealth
 	value = MaxHealth
 	currentHealth = MaxHealth
 	$"../Number".text = "%0.0f" %currentHealth
