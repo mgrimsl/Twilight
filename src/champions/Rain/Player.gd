@@ -40,6 +40,7 @@ func _ready():
 	ground.ability1.connect(_on_ground_ability_1)
 	floatGUI = $FloatGUI/HBoxContainer/Bars/Bar/Count/BackGround/Gauge
 	$FloatGUI/HBoxContainer/Bars/Bar/Count/BackGround/DebugName.text = get_parent().name
+	print("READY")
 	
 
 func _physics_process(delta):
@@ -122,4 +123,5 @@ func _on_input_event(camera, event, position, normal, shape_idx):
 
 func setBaseStats(champData):
 	self.champData = champData
+	print(champData)
 	floatGUI.MaxHealth = champData["baseStats"]["maxHealth"]

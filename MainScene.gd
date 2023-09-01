@@ -55,9 +55,10 @@ func _on_peer_connected(id):
 		_register_player(id)
 	
 func _on_connected_to_server():
+	print("hello")
 	$GUI/HBoxContainer/Bars/Join.visible = false
-	$HTTPRequest.request_completed.connect(_on_request_completed)
-	$HTTPRequest.request("http://127.0.0.1:8090/api/collections/champions/records/?fields=name,id")
+	$HTTPRequest.request_completed.connect(_populate_champ_buttons)
+	$HTTPRequest.request("http://" +remoteServerIP+":8081/api/collections/champions/records/?fields=name,id")
 	print("Connected to Server")
 
 func _on_champ_select(id):
@@ -66,8 +67,9 @@ func _on_champ_select(id):
 		$GUI/HBoxContainer/Bars.get_node(str(champ)).visible = false
 	rpc_id(1, "_selectChampion", id)
 
-func _on_request_completed(result, response_code, headers, body):
+func _populate_champ_buttons(result, response_code, headers, body):
 	var json = JSON.parse_string(body.get_string_from_utf8())
+	print(json)
 	for name in json["items"]:
 		var button = champSelectButton.instantiate()
 		button.text = name["name"]
