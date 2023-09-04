@@ -1,22 +1,26 @@
 extends TextureProgressBar
 
-var MaxHealth = -1
-var currentHealth = -1
+var maxHealth = 1
+var currentHealth = 1
+var Player = null
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	pass
 	max_value = currentHealth
-	value = MaxHealth
-	currentHealth = MaxHealth
+	value = maxHealth
+	currentHealth = maxHealth
 	$"../Number".text = "%0.0f" %currentHealth
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
+	max_value = maxHealth
 	value = currentHealth
-	if value <= 0:
-		currentHealth = MaxHealth
-		$"../Number".text = "%0.0f" %currentHealth
 
-func on_hit(dmg):
-	currentHealth -= dmg
 	$"../Number".text = "%0.0f" %currentHealth
+	#if value <= 0:
+	#	currentHealth = maxHealth
+	#	$"../Number".text = "%0.0f" %currentHealth
+
+func setHP(max, current):
+	maxHealth = max
+	currentHealth = current

@@ -1,13 +1,16 @@
-[gd_scene load_steps=18 format=3 uid="uid://05hl1cqa7sm8"]
+[gd_scene load_steps=15 format=3 uid="uid://05hl1cqa7sm8"]
 
 [ext_resource type="Script" path="res://src/cameras/CameraNode.gd" id="1_5afgx"]
 [ext_resource type="Texture2D" uid="uid://cjmssfcrvfycj" path="res://assets/mesh/wispy-grass-meadow_albedo.png" id="1_hhnin"]
 [ext_resource type="Script" path="res://MainScene.gd" id="1_wpbrr"]
 [ext_resource type="PackedScene" uid="uid://b46k0ob7owk51" path="res://src/champions/PlayerRpc.tscn" id="2_vj3hd"]
-[ext_resource type="Script" path="res://src/depricated/Enemy.gd" id="5_7odlj"]
 [ext_resource type="Script" path="res://src/world/Ground.gd" id="5_15tt3"]
 [ext_resource type="PackedScene" uid="uid://bme4lusqxwnqn" path="res://src/ui/gui.tscn" id="8_klb7r"]
 [ext_resource type="Script" path="res://src/champions/PlayersMan.gd" id="8_oyfto"]
+[ext_resource type="Script" path="res://InputHandler.gd" id="8_pa3wy"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jff5m"]
+size = Vector3(20, 1, 1)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kbypd"]
 sky_top_color = Color(0.384314, 0.454902, 0.54902, 1)
@@ -23,47 +26,15 @@ sky = SubResource("Sky_ofk77")
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_jff5m"]
-size = Vector3(20, 1, 1)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cwegp"]
 albedo_texture = ExtResource("1_hhnin")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cxbsq"]
 size = Vector3(100, 0.002, 100)
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0mxr8"]
-
-[sub_resource type="GDScript" id="GDScript_8stry"]
-script/source = "extends CollisionShape3D
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-"
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_iufpc"]
-
 [node name="World" type="Node3D"]
 script = ExtResource("1_wpbrr")
 player_scene = ExtResource("2_vj3hd")
-
-[node name="GUI" parent="." instance=ExtResource("8_klb7r")]
-offset_bottom = 1080.0
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
-light_energy = 3.0
-shadow_enabled = true
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_jcbkn")
 
 [node name="Map" type="Node3D" parent="."]
 
@@ -78,50 +49,43 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.120973, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.126164, 0)
 shape = SubResource("BoxShape3D_jff5m")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 2.12004e-14, 3.68538e-14, -4.12792e-14, 0.276527, 0.961006, 1.01827e-14, -0.961006, 0.276527, 0, 11.5694, 1)
-script = ExtResource("1_5afgx")
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Map"]
+environment = SubResource("Environment_jcbkn")
 
-[node name="Ground" type="StaticBody3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Map"]
+transform = Transform3D(-0.866024, -0.433016, 0.250001, 0, 0.499998, 0.866026, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+light_energy = 3.0
+shadow_enabled = true
+
+[node name="Ground" type="StaticBody3D" parent="Map"]
 script = ExtResource("5_15tt3")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="Ground"]
+[node name="CSGBox3D" type="CSGBox3D" parent="Map/Ground"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.001, 0)
 use_collision = true
 size = Vector3(100, 0.002, 100)
 material = SubResource("StandardMaterial3D_cwegp")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Ground"]
 shape = SubResource("BoxShape3D_cxbsq")
 
-[node name="Enemy" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 3.29923)
-script = ExtResource("5_7odlj")
+[node name="GUI" parent="." instance=ExtResource("8_klb7r")]
+offset_bottom = 1080.0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemy"]
-shape = SubResource("CapsuleShape3D_0mxr8")
-script = SubResource("GDScript_8stry")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Enemy"]
-mesh = SubResource("CapsuleMesh_iufpc")
-
-[node name="FloatGUI" parent="Enemy" instance=ExtResource("8_klb7r")]
-offset_left = 509.0
-offset_top = 461.0
-offset_right = 509.0
-offset_bottom = 1541.0
-scale = Vector2(0.3, 0.3)
-
-[node name="Timer" type="Timer" parent="Enemy"]
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 2.12004e-14, 3.68538e-14, -4.12792e-14, 0.276527, 0.961006, 1.01827e-14, -0.961006, 0.276527, 0, 11.5694, 1)
+script = ExtResource("1_5afgx")
 
 [node name="PlayersMan" type="Node3D" parent="."]
 script = ExtResource("8_oyfto")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="PlayersMan"]
-_spawnable_scenes = PackedStringArray("res://src/champions/Rain/AutoAttack/auto_attack.tscn", "res://src/champions/Rain/Abilities/ability_1.tscn", "res://src/champions/PlayerRpc.tscn")
+_spawnable_scenes = PackedStringArray("res://src/champions/Rain/AutoAttack/auto_attack.tscn", "res://src/champions/PlayerRpc.tscn")
 spawn_path = NodePath("..")
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 
-[connection signal="ability1" from="Ground" to="." method="_on_ground_ability_1"]
-[connection signal="timeout" from="Enemy/Timer" to="Enemy" method="_on_timer_timeout"]
+[node name="InputHandler" type="Node" parent="."]
+script = ExtResource("8_pa3wy")
+
+[connection signal="ability1" from="Map/Ground" to="." method="_on_ground_ability_1"]

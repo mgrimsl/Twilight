@@ -10,12 +10,10 @@ var A1Cd = 1
 var canCastA1 = true
 var A1Timer : Timer
 var ChannelTimer : Timer
-var ability1scn = preload("res://src/champions/Rain/Abilities/ability_1.tscn")
 #Auto Attacks
 var attacking = false
 var inWindUp = false
 var target
-var autoAttackscn = preload("res://src/champions/Rain/AutoAttack/auto_attack.tscn")
 #movment
 var moving = false
 var destination = Vector3(1,1,1)
@@ -26,26 +24,24 @@ var mouse = Vector3()
 var skillDest = Vector3()
 var animator : AnimationPlayer
 var floatGUI 
+var GUI
 
-signal attacked(enemy:CharacterBody3D)
-@onready var cam = $"../Camera3D"
+signal RightClicked(enemy:CharacterBody3D)
+signal MouseEntered(enemyName)
+signal MouseExited(enemyName)
+#@onready var cam = $"../Camera3D"
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-
 func _ready():
 	animator = $StylizedCharacter/AnimationPlayer
-	var ground = $"../../../Ground"
+	var ground = $"../../../Map/Ground"
 	ground.move.connect(_on_ground_move)
-	ground.ability1.connect(_on_ground_ability_1)
 	floatGUI = $FloatGUI/HBoxContainer/Bars/Bar/Count/BackGround/Gauge
+	floatGUI.Player = self
 	$FloatGUI/HBoxContainer/Bars/Bar/Count/BackGround/DebugName.text = get_parent().name
-	print("READY")
-	
-
+	GUI = get_tree().root.get_child(0).get_node("GUI/HBoxContainer/Bars/Bar/Count/BackGround/Gauge")
 func _physics_process(delta):
-	if channel:
-		return
 	look_at(destination, Vector3.UP)
 	animationHandel()
 	HandleGUI_Move()
@@ -58,7 +54,7 @@ func updateMovementState(MovementState):
 func animationHandel():
 	if moving:
 		animator.play("Run")
-	elif inWindUp:
+	elif channel:
 		animator.play("Punch_R")
 	else:
 		animator.play("Iddle")
@@ -73,55 +69,33 @@ func stop():
 	moving = false
 
 func updateAttkStat(AttackState):
-	inWindUp = AttackState["inWindUp"]
+	channel = AttackState["channel"]
 	attacking = AttackState["attacking"]
 
-func attack():
-	var autoAttack = autoAttackscn.instantiate()
-	autoAttack.init(position, target)
-	add_sibling(autoAttack)
-
 func _on_ground_move(dest):
-	get_parent().rpc_id(1, "_updateDest", get_parent().name, dest)
-
-func _on_ground_ability_1(dest = mouse):
-	destination = dest
-	if !canCastA1:
-		return
-	look_at(dest, Vector3.UP)
-	stop()
-	A1Timer.wait_time = A1Cd
-	A1Timer.start()
-	ChannelTimer.wait_time = Ab1Channel
-	ChannelTimer.start()
-	canCastA1 = false
-	channel = true
-	skillDest = dest
-	animator.play("Kick_R")
-
-func _on_a_1cd_timeout():
-	A1Timer.stop()
-	canCastA1 = true
-
-func _on_channel_timeout():
-	ChannelTimer.stop()
-	channel = false
-	var ability1 = ability1scn.instantiate()
-	ability1.init(skillDest, position, self)
-	call_deferred("add_sibling", ability1)
+	var rpc = get_parent()
+	target = null
+	rpc.rpc_id(1, "_updateDest", get_parent().name, dest)
 
 func hit(damage, player, name):
-	print(player, " ", name)
 	$FloatGUI/HBoxContainer/Bars/Bar/Count/BackGround/Gauge.on_hit(damage)
 	if is_multiplayer_authority():
 		pass
-		$"../../GUI/HBoxContainer/Bars/Bar/Count/BackGround/Gauge".on_hit(damage)
+		$"../../../GUI/HBoxContainer/Bars/Bar/Count/BackGround/Gauge".on_hit(damage)
 
 func _on_input_event(camera, event, position, normal, shape_idx):
-	if Input.is_action_just_pressed("Attack"):
-		emit_signal("attacked")
+	if Input.is_action_just_pressed("Right-Click"):
+		emit_signal("RightClicked",get_parent().name)
 
-func setBaseStats(champData):
-	self.champData = champData
-	print(champData)
-	floatGUI.MaxHealth = champData["baseStats"]["maxHealth"]
+func setBaseStats(baseStats):
+	if get_parent().name == str(multiplayer.get_unique_id()):
+		GUI.setHP(baseStats["maxHealth"],baseStats["currentHealth"])
+	floatGUI.setHP(baseStats["maxHealth"],baseStats["currentHealth"])
+
+	
+
+func _on_mouse_exited():
+	emit_signal("MouseEntered",get_parent().name)
+
+func _on_mouse_entered():
+	emit_signal("MouseExited",get_parent().name)

@@ -7,9 +7,11 @@ var port = 8080
 @export var player_scene : PackedScene
 @onready var cam = $Camera3D
 var champSelectButton = preload("res://src/ui/ChampSelectButton.tscn")
-signal player_connected(peer_id, player_info)
-signal player_disconnected(peer_id)
-signal server_disconnected
+#signal player_connected(peer_id, player_info)
+#signal player_disconnected(peer_id)
+var quit
+var join
+var champId
 var playerNum = -1
 # This will contain player info for every player, with the keys being each player's unique IDs.
 var players = {}
@@ -24,15 +26,32 @@ var players_loaded = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$HTTPRequest.request_completed.connect(_populate_champ_buttons)
+	$HTTPRequest.request("http://" +remoteServerIP+":8081/api/collections/champions/records/?fields=name,id")
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 	multiplayer.peer_connected.connect(_on_peer_connected)
-	$GUI/HBoxContainer/Bars/Quit.pressed.connect(_on_quit_pressed)
-	$GUI/HBoxContainer/Bars/Join.pressed.connect(_on_join_pressed)
+	quit = $GUI/HBoxContainer/Bars/Quit
+	quit.pressed.connect(_on_quit_pressed)
+	join = $GUI/HBoxContainer/Bars/Join
+	join.pressed.connect(_on_join_pressed)
 	if(isServer):
 		var peer = ENetMultiplayerPeer.new()
 		peer.create_server(8080)
 		multiplayer.multiplayer_peer = peer
 
+@rpc("reliable") func _selectChampion(id):
+	pass
+@rpc("reliable")
+func _register_player(id):
+	var player = player_scene.instantiate()
+	player.name = str(id)
+	$PlayersMan.add_child(player)
+	$GUI/HBoxContainer/Bars/Bar/Count/BackGround/Gauge.Player = player
+
+@rpc("reliable") func _del_player(id):
+	print("remote sender: ", multiplayer.get_remote_sender_id(), " wants to delte id: ", id)
+	$PlayersMan.get_node(str(id)).queue_free()
+	
 func _on_join_pressed():
 	var peer = ENetMultiplayerPeer.new()
 	if local:
@@ -55,21 +74,20 @@ func _on_peer_connected(id):
 		_register_player(id)
 	
 func _on_connected_to_server():
-	print("hello")
+	rpc("_selectChampion", champId)
 	$GUI/HBoxContainer/Bars/Join.visible = false
-	$HTTPRequest.request_completed.connect(_populate_champ_buttons)
-	$HTTPRequest.request("http://" +remoteServerIP+":8081/api/collections/champions/records/?fields=name,id")
+	$GUI/HBoxContainer/Bars/Quit.visible = true
 	print("Connected to Server")
 
 func _on_champ_select(id):
-	$GUI/HBoxContainer/Bars/Quit.visible = true
+	$GUI/HBoxContainer/Bars/Join.visible = true
+	champId = id
 	for champ in champs:
 		$GUI/HBoxContainer/Bars.get_node(str(champ)).visible = false
-	rpc_id(1, "_selectChampion", id)
+	#rpc_id(1, "_selectChampion", id)
 
 func _populate_champ_buttons(result, response_code, headers, body):
 	var json = JSON.parse_string(body.get_string_from_utf8())
-	print(json)
 	for name in json["items"]:
 		var button = champSelectButton.instantiate()
 		button.text = name["name"]
@@ -77,17 +95,3 @@ func _populate_champ_buttons(result, response_code, headers, body):
 		button._champSelect.connect(_on_champ_select)
 		champs.append(name["id"])
 		$GUI/HBoxContainer/Bars.add_child(button)
-
-@rpc("reliable", "any_peer") func _selectChampion(id):
-	pass
-@rpc("reliable")
-func _register_player(id):
-	print("register player. new player info : ",id)
-	var player = player_scene.instantiate()
-	player.name = str(id)
-	$PlayersMan.add_child(player)
-
-@rpc("authority","reliable", "call_local") func _del_player(id):
-	print("remote sender: ", multiplayer.get_remote_sender_id(), " wants to delte id: ", id)
-	$PlayersMan.get_node(str(id)).queue_free()
-

@@ -77,6 +77,7 @@ texture_progress = ExtResource("5_ambs2")
 script = ExtResource("6_fo3q3")
 
 [node name="Join" type="Button" parent="HBoxContainer/Bars"]
+visible = false
 layout_mode = 2
 text = "Join"
 
@@ -93,5 +94,3 @@ layout_mode = 2
 position = Vector2(22, 1055)
 scale = Vector2(0.0898438, 0.0878908)
 texture = ExtResource("7_rdgu4")
-
-[connection signal="pressed" from="HBoxContainer/Bars/Join" to="HBoxContainer/Bars/Bar/Count/BackGround/Gauge" method="_on_join_pressed"]

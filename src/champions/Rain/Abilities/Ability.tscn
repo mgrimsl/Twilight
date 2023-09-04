@@ -1,6 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://c0i3o83kejriy"]
+[gd_scene load_steps=5 format=3 uid="uid://fgys2e0sr01a"]
 
-[ext_resource type="Script" path="res://src/champions/Rain/Abilities/Ability1.gd" id="1_uguj4"]
+[ext_resource type="Script" path="res://src/champions/Rain/Abilities/Ability.gd" id="1_2ub07"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_5qc8r"]
 
@@ -9,15 +9,9 @@ albedo_color = Color(1, 0.192157, 0.247059, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_aoqsu"]
 
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_cwxfx"]
-properties/0/path = NodePath(".:position")
-properties/0/spawn = true
-properties/0/sync = true
-properties/0/watch = false
-
-[node name="Ability1" type="Area3D"]
+[node name="Ability" type="Area3D"]
 transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
-script = ExtResource("1_uguj4")
+script = ExtResource("1_2ub07")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("PlaneMesh_5qc8r")
@@ -26,9 +20,6 @@ surface_material_override/0 = SubResource("StandardMaterial3D_rre2l")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0)
 shape = SubResource("BoxShape3D_aoqsu")
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_cwxfx")
 
 [node name="DebuffTimer" type="Timer" parent="."]
 

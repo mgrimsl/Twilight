@@ -1,8 +1,7 @@
-
 extends Area3D
 
 var damage = 5
-var dest = Vector3()
+var dest = Vector3(1,1,1)
 var velocity = Vector3.ZERO
 var start = Vector3()
 var constantTravel = false
@@ -11,14 +10,13 @@ var speed = .3
 var target
 
 func init(pos, e):
-		target = e
-		start = Vector3(pos.x,1,pos.z) 
-		dest = target.position
-		start += start.direction_to(dest) * 1
-		transform.origin = start
-
+	target = e
+	start = Vector3(pos.x,1,pos.z)  
+	dest = target.position
+	start += start.direction_to(dest) * 1
+	transform.origin = start
+	look_at(dest)
 func _physics_process(_delta):
-	pass
 	dest = target.position
 	if(constantTravel == true):
 		fixedTravel()
@@ -35,8 +33,7 @@ func fixedTravel():
 func travel():
 	velocity = position.direction_to(dest) * speed
 	transform.origin += velocity
-
 func _on_body_entered(body):
 	if body == target:
-		body.hit(damage, body, name)
+		#body.hit(damage, name, get_parent())
 		call_deferred("queue_free")

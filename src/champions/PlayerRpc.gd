@@ -2,50 +2,25 @@ extends Node3D
 
 var eDelta = 0
 var isAuth = false
+var target = null
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass
-
-
-func _physics_process(delta):
-	eDelta = delta
-	if is_multiplayer_authority():
-		if Input.is_action_just_pressed("Attack"):
-			pass
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
-	pass
 
 func _enter_tree():
-	print("Player: ", name, " Entered the Tree")
+	get_parent().playerAdded(self)
 
 func _on_timer_timeout():
 	pass
-	
-func _on_player_attacked():
-	rpc("_attacked", str(name))
 
-@rpc("any_peer") func updateState(id,State):
-	if(id == name):
-		$Player.updateMovementState(State["MovementState"])
-		$Player.updateAttkStat(State["AttackState"])
-		
-@rpc("any_peer") func attack(targetId, MovementState):
-	var parent = get_parent()
-	var target = parent.get_node(str(targetId))
-	$Player.target = target.get_node("Player")
-	$Player.updateMovementState(MovementState)
-	$Player.attack()
-	#print($Player.name, " attacked ", $Player.target.name, " at target pos ", $Player.target.get)
+@rpc() func updateState(State):
+	$Player.target = State["target"]
+	$Player.updateMovementState(State["MovementState"])
+	$Player.updateAttkStat(State["AttackState"])
+	$Player.setBaseStats(State["BaseStats"])
 
-@rpc("reliable", "any_peer") func sendChampData(champData):
-	$Player.champData = champData
-	$Player.setBaseStats(champData)
-
-@rpc("any_peer") func _updateDest(id,pos):
-	pass
-@rpc("any_peer") func _attacked(target):
+@rpc() func _updateDest(id,pos):
 	pass
 			
 func V2to3(vector2 : Vector2):

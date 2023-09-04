@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://b46k0ob7owk51"]
+[gd_scene load_steps=3 format=3 uid="uid://b46k0ob7owk51"]
 
 [ext_resource type="Script" path="res://src/champions/PlayerRpc.gd" id="1_so1xs"]
 [ext_resource type="PackedScene" uid="uid://bdjkh3nasn8vn" path="res://src/champions/Rain/Player.tscn" id="2_xiajm"]
-[ext_resource type="Script" path="res://src/champions/AbilityHandler.gd" id="3_yf3xh"]
 
 [node name="PlayerRpc" type="Node3D"]
 script = ExtResource("1_so1xs")
@@ -14,7 +13,5 @@ process_callback = 0
 wait_time = 0.03
 autostart = true
 
-[node name="AbilityHandler" type="Node" parent="."]
-script = ExtResource("3_yf3xh")
-
+[connection signal="attacked" from="Player" to="." method="_on_player_attacked"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
