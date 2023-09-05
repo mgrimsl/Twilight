@@ -40,7 +40,7 @@ func _ready():
 	floatGUI = $FloatGUI/HBoxContainer/Bars/Bar/Count/BackGround/Gauge
 	floatGUI.Player = self
 	$FloatGUI/HBoxContainer/Bars/Bar/Count/BackGround/DebugName.text = get_parent().name
-	GUI = get_tree().root.get_child(0).get_node("GUI/HBoxContainer/Bars/Bar/Count/BackGround/Gauge")
+	GUI = get_tree().root.get_child(1).get_node("GUI/HBoxContainer/Bars/Bar/Count/BackGround/Gauge")
 func _physics_process(delta):
 	look_at(destination, Vector3.UP)
 	animationHandel()
@@ -61,8 +61,8 @@ func animationHandel():
 
 func HandleGUI_Move():
 	var vpPos = $"../../../Camera3D".unproject_position(position)
-	vpPos.x -= 160
-	vpPos.y -= 220
+	vpPos.x -= 145
+	vpPos.y -= 125
 	$FloatGUI.position = vpPos
 
 func stop():
@@ -89,7 +89,7 @@ func _on_input_event(camera, event, position, normal, shape_idx):
 
 func setBaseStats(baseStats):
 	if get_parent().name == str(multiplayer.get_unique_id()):
-		GUI.setHP(baseStats["maxHealth"],baseStats["currentHealth"])
+		get_node("/root/Global").mainGuage.setHP(baseStats["maxHealth"],baseStats["currentHealth"])
 	floatGUI.setHP(baseStats["maxHealth"],baseStats["currentHealth"])
 
 	

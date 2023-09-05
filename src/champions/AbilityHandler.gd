@@ -6,21 +6,40 @@ func _ready():
 	pass # Replace with function body.
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+@rpc() func cooldown(title, timeleft, timeout = false):
+	if timeout:
+		var txt = ""
+		match title:
+			"AA":
+				return
+			"P":
+				return
+			"A1":
+				txt = "Q"
+			"A2":
+				txt = "W"
+			"A3":
+				txt = "E"
+			"A4":
+				txt = "R"
+		get_node("/root/Global").hotBar.get_node(title).text = txt
+		return
+	get_node("/root/Global").hotBar.get_node(title).text = str(timeleft)
 
-@rpc() func spawnAbility(name):
+
+@rpc() func spawnAbility(title, nodeName, size):
 	var ability
 	ability = Ability.instantiate()
-	ability.name = name
-	add_child(ability)
-	ability = get_node(str(name))
+	ability.name = nodeName
+	ability.scale = Vector3(size,size,size)
+	add_child(ability, true)
+	ability = get_node(str(ability.name))
+	print(title)
 	var mesh :MeshInstance3D
 	mesh = ability.get_node("MeshInstance3D")
 	var mat = StandardMaterial3D.new()
 	
-	match name:
+	match title:
 		"AA":
 			mat.albedo_color = Color(100,0,0)
 		"P":

@@ -38,6 +38,8 @@ func _ready():
 		var peer = ENetMultiplayerPeer.new()
 		peer.create_server(8080)
 		multiplayer.multiplayer_peer = peer
+		CheckButton
+	$GUI/HBoxContainer/Bars/CheckButton.toggled.connect(_on_local_togggled)
 
 @rpc("reliable") func _selectChampion(id):
 	pass
@@ -85,6 +87,13 @@ func _on_champ_select(id):
 	for champ in champs:
 		$GUI/HBoxContainer/Bars.get_node(str(champ)).visible = false
 	#rpc_id(1, "_selectChampion", id)
+
+func _on_local_togggled(value):
+	print(value)
+	if !value:
+		local = true;
+	else:
+		local = false
 
 func _populate_champ_buttons(result, response_code, headers, body):
 	var json = JSON.parse_string(body.get_string_from_utf8())

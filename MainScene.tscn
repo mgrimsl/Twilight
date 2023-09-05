@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://05hl1cqa7sm8"]
+[gd_scene load_steps=14 format=3 uid="uid://05hl1cqa7sm8"]
 
 [ext_resource type="Script" path="res://src/cameras/CameraNode.gd" id="1_5afgx"]
 [ext_resource type="Texture2D" uid="uid://cjmssfcrvfycj" path="res://assets/mesh/wispy-grass-meadow_albedo.png" id="1_hhnin"]
@@ -8,9 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://bme4lusqxwnqn" path="res://src/ui/gui.tscn" id="8_klb7r"]
 [ext_resource type="Script" path="res://src/champions/PlayersMan.gd" id="8_oyfto"]
 [ext_resource type="Script" path="res://InputHandler.gd" id="8_pa3wy"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_jff5m"]
-size = Vector3(20, 1, 1)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kbypd"]
 sky_top_color = Color(0.384314, 0.454902, 0.54902, 1)
@@ -39,15 +36,12 @@ player_scene = ExtResource("2_vj3hd")
 [node name="Map" type="Node3D" parent="."]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Map"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.6205, 0.766764, 0.497438)
-size = Vector3(20, 1, 1)
+transform = Transform3D(-3.16735e-08, 0.724605, -0.689164, -1, -4.37114e-08, 0, -3.01243e-08, 0.689164, 0.724605, -3.71044, 2.40711, -5.3618)
+visible = false
+size = Vector3(5, 1, 1)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Map/CSGBox3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.120973, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/CSGBox3D/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.126164, 0)
-shape = SubResource("BoxShape3D_jff5m")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Map"]
 environment = SubResource("Environment_jcbkn")
@@ -73,15 +67,13 @@ shape = SubResource("BoxShape3D_cxbsq")
 offset_bottom = 1080.0
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 2.12004e-14, 3.68538e-14, -4.12792e-14, 0.276527, 0.961006, 1.01827e-14, -0.961006, 0.276527, 0, 11.5694, 1)
+transform = Transform3D(1, 0, 0, 0, 0.642788, 0.766044, 0, -0.766044, 0.642788, 0, 11.5694, 1)
+projection = 1
+size = 12.0
 script = ExtResource("1_5afgx")
 
 [node name="PlayersMan" type="Node3D" parent="."]
 script = ExtResource("8_oyfto")
-
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="PlayersMan"]
-_spawnable_scenes = PackedStringArray("res://src/champions/Rain/AutoAttack/auto_attack.tscn", "res://src/champions/PlayerRpc.tscn")
-spawn_path = NodePath("..")
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 

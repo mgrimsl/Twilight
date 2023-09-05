@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bme4lusqxwnqn"]
+[gd_scene load_steps=9 format=3 uid="uid://bme4lusqxwnqn"]
 
 [ext_resource type="Texture2D" uid="uid://xixeul53rjpr" path="res://assets/GUI/label_HP_bg.png" id="1_d33lk"]
 [ext_resource type="Texture2D" uid="uid://tpucmmif8bp1" path="res://assets/GUI/label_HP.png" id="2_d4eif"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://c700mc2kx2kox" path="res://assets/GUI/lifebar_fill_Green.png" id="5_ambs2"]
 [ext_resource type="Script" path="res://src/ui/Gauge.gd" id="6_fo3q3"]
 [ext_resource type="Texture2D" uid="uid://dctj3oicnchxh" path="res://assets/GUI/right-arrow.png" id="7_rdgu4"]
+[ext_resource type="Script" path="res://src/ui/HotBar.gd" id="8_2reua"]
 
 [node name="GUI" type="MarginContainer"]
 custom_minimum_size = Vector2(1920, 1080)
@@ -87,6 +88,15 @@ layout_mode = 2
 text = "Quit
 "
 
+[node name="CheckButton" type="CheckButton" parent="HBoxContainer/Bars"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 21
+text = "Local"
+
+[node name="HBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
 [node name="Counters" type="HBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
 
@@ -94,3 +104,37 @@ layout_mode = 2
 position = Vector2(22, 1055)
 scale = Vector2(0.0898438, 0.0878908)
 texture = ExtResource("7_rdgu4")
+
+[node name="HotBar" type="BoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+script = ExtResource("8_2reua")
+
+[node name="A1" type="Button" parent="HotBar"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 8
+toggle_mode = true
+text = "Q"
+
+[node name="A2" type="Button" parent="HotBar"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 8
+toggle_mode = true
+text = "W"
+
+[node name="A3" type="Button" parent="HotBar"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 8
+toggle_mode = true
+text = "E"
+
+[node name="A4" type="Button" parent="HotBar"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 8
+toggle_mode = true
+text = "R"

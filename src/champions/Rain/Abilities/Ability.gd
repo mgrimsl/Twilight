@@ -11,13 +11,12 @@ var travelDistance = 7
 var speed = .3
 var own
 var active = true
-@onready var timer : Timer = $DebuffTimer
 var target
 signal hit(target: CharacterBody3D)
 
 @rpc() func sync(pos, targetPos, remove = false):
 	if remove:
-		call_deferred("queue_free")
+		queue_free()
 		return
 	position = lerp(position,pos, 1)
 	
