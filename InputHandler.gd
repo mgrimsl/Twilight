@@ -10,6 +10,7 @@ func _ready():
 func _process(_delta):
 	var mouse = $"../Map/Ground".mouse
 	var input = ""
+	var keyReleased = false
 	if Input.is_action_just_pressed("Ability1"):
 		input = "Ability1"
 	if Input.is_action_just_pressed("Ability2"):
@@ -22,11 +23,21 @@ func _process(_delta):
 		input = "Right-Click"
 	if Input.is_action_just_pressed("Click"):
 		pass
-	if input == "":
-		return
-	
-	rpc_id(1,"input", input, mouse, target)
+	if Input.is_action_just_released("Ability1"):
+		keyReleased = true
+		input = "Ability1"
+	if Input.is_action_just_released("Ability2"):
+		keyReleased = true
+		input = "Ability2"
+	if Input.is_action_just_released("Ability3"):
+		keyReleased = true
+		input = "Ability3"
+	if Input.is_action_just_released("Ability4"):
+		keyReleased = true
+		input = "Ability4"
+	if !multiplayer.is_server():
+		rpc_id(1,"input", input, mouse, keyReleased, target)
 
 
-@rpc() func input(input, mouse, target = null):
+@rpc() func input(input, mouse,keyReleased, target = null):
 	pass

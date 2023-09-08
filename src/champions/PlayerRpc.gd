@@ -15,7 +15,7 @@ func _on_timer_timeout():
 	pass
 
 @rpc() func updateState(State):
-	$Player.target = State["target"]
+	$Player.target = State["targetPos"]
 	$Player.updateMovementState(State["MovementState"])
 	$Player.updateAttkStat(State["AttackState"])
 	$Player.setBaseStats(State["BaseStats"])

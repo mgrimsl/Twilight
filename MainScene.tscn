@@ -33,6 +33,9 @@ size = Vector3(100, 0.002, 100)
 script = ExtResource("1_wpbrr")
 player_scene = ExtResource("2_vj3hd")
 
+[node name="PlayersMan" type="Node3D" parent="."]
+script = ExtResource("8_oyfto")
+
 [node name="Map" type="Node3D" parent="."]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Map"]
@@ -52,6 +55,9 @@ light_energy = 3.0
 shadow_enabled = true
 
 [node name="Ground" type="StaticBody3D" parent="Map"]
+collision_layer = 2
+collision_mask = 2
+collision_priority = 0.0
 script = ExtResource("5_15tt3")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Map/Ground"]
@@ -67,13 +73,10 @@ shape = SubResource("BoxShape3D_cxbsq")
 offset_bottom = 1080.0
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.642788, 0.766044, 0, -0.766044, 0.642788, 0, 11.5694, 1)
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 11.5694, 3.35521)
 projection = 1
 size = 12.0
 script = ExtResource("1_5afgx")
-
-[node name="PlayersMan" type="Node3D" parent="."]
-script = ExtResource("8_oyfto")
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 

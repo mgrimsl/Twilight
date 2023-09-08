@@ -42,7 +42,10 @@ func _ready():
 	$FloatGUI/HBoxContainer/Bars/Bar/Count/BackGround/DebugName.text = get_parent().name
 	GUI = get_tree().root.get_child(1).get_node("GUI/HBoxContainer/Bars/Bar/Count/BackGround/Gauge")
 func _physics_process(delta):
-	look_at(destination, Vector3.UP)
+	if(target != null):
+		look_at(target, Vector3.UP)
+	else:
+		look_at(destination, Vector3.UP)
 	animationHandel()
 	HandleGUI_Move()
 #
@@ -52,7 +55,9 @@ func updateMovementState(MovementState):
 		moving = MovementState["moving"]
 
 func animationHandel():
-	if moving:
+	if channel:
+		animator.play("Punch_R")
+	elif moving:
 		animator.play("Run")
 	elif channel:
 		animator.play("Punch_R")
@@ -84,6 +89,8 @@ func hit(damage, player, name):
 		$"../../../GUI/HBoxContainer/Bars/Bar/Count/BackGround/Gauge".on_hit(damage)
 
 func _on_input_event(camera, event, position, normal, shape_idx):
+	position.y = 1
+	get_parent().get_parent().get_parent().get_node("Map").get_node("Ground").mouse = position
 	if Input.is_action_just_pressed("Right-Click"):
 		emit_signal("RightClicked",get_parent().name)
 

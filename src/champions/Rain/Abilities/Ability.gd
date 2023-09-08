@@ -16,8 +16,12 @@ signal hit(target: CharacterBody3D)
 
 @rpc() func sync(pos, targetPos, remove = false):
 	if remove:
+		print("remove")
 		queue_free()
 		return
+	if(targetPos != position):
+		look_at(targetPos, Vector3.UP)
 	position = lerp(position,pos, 1)
+	visible = true
 	
 

@@ -1,6 +1,6 @@
 extends Node
 var Ability = preload("res://src/champions/Rain/Abilities/Ability.tscn")
-
+var ability
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -27,16 +27,16 @@ func _ready():
 	get_node("/root/Global").hotBar.get_node(title).text = str(timeleft)
 
 
-@rpc() func spawnAbility(title, nodeName, size):
-	var ability
+@rpc() func spawnAbility(title, nodeName, size, length, width):
 	ability = Ability.instantiate()
 	ability.name = nodeName
-	ability.scale = Vector3(size,size,size)
+	ability.visible = false
+	#ability.scale = Vector3(size,size,size)
 	add_child(ability, true)
 	ability = get_node(str(ability.name))
 	print(title)
-	var mesh :MeshInstance3D
-	mesh = ability.get_node("MeshInstance3D")
+	var meshInstance = ability.get_node("MeshInstance3D")
+	setMeshSize(length, width)
 	var mat = StandardMaterial3D.new()
 	
 	match title:
@@ -52,5 +52,19 @@ func _ready():
 			mat.albedo_color = Color(50,0,50)
 		"A4":
 			mat.albedo_color = Color(50,50,0)
-	mesh.set_surface_override_material(0,mat)
+	meshInstance.set_surface_override_material(0,mat)
+	
+func setMeshSize(length, width):
+	if length > 0 && width > 0:
+		var meshInstance = ability.get_node("MeshInstance3D")
+		var planeMesh = PlaneMesh.new()
+		planeMesh.size = Vector2(width,length)
+		meshInstance.mesh = planeMesh
+	elif width > 0:
+		var meshInstance = ability.get_node("MeshInstance3D")
+		var sphereMesh = SphereMesh.new()
+		sphereMesh.radius = width
+		sphereMesh.height = 0.01
+		meshInstance.mesh = sphereMesh
+
 	

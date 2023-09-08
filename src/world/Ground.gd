@@ -11,6 +11,7 @@ func _ready():
 	navBall.position = mouse
 
 func _input(event):
+	#print(event)
 	if event.is_action_pressed("Ability1"):
 		pass
 		#emit_signal("ability1", mouse)
