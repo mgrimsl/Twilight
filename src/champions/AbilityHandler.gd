@@ -22,6 +22,7 @@ func _ready():
 				txt = "E"
 			"A4":
 				txt = "R"
+		#get_parent().get_node("GUI/HotBar").get_node(title).text = txt
 		get_node("/root/Global").hotBar.get_node(title).text = txt
 		return
 	get_node("/root/Global").hotBar.get_node(title).text = str(timeleft)

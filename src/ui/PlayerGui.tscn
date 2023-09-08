@@ -1,12 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://ol17actpa6tu"]
+[gd_scene load_steps=9 format=3 uid="uid://d3njuaii2x18c"]
 
-[ext_resource type="Texture2D" uid="uid://xixeul53rjpr" path="res://assets/GUI/label_HP_bg.png" id="1_psrlr"]
-[ext_resource type="Texture2D" uid="uid://tpucmmif8bp1" path="res://assets/GUI/label_HP.png" id="2_um1ig"]
-[ext_resource type="FontFile" uid="uid://dhuapfc16n5u1" path="res://assets/font/Comfortaa-Bold.ttf" id="3_v66un"]
-[ext_resource type="Texture2D" uid="uid://c22kufdpjx6u8" path="res://assets/GUI/lifebar_bg_Green.png" id="4_hwhv4"]
-[ext_resource type="Texture2D" uid="uid://c700mc2kx2kox" path="res://assets/GUI/lifebar_fill_Green.png" id="5_okn1n"]
-[ext_resource type="Script" path="res://src/ui/Gauge.gd" id="6_uybis"]
-[ext_resource type="Texture2D" uid="uid://dctj3oicnchxh" path="res://assets/GUI/right-arrow.png" id="7_8ocg5"]
+[ext_resource type="Texture2D" uid="uid://xixeul53rjpr" path="res://assets/GUI/label_HP_bg.png" id="1_o4m6q"]
+[ext_resource type="Texture2D" uid="uid://tpucmmif8bp1" path="res://assets/GUI/label_HP.png" id="2_38psa"]
+[ext_resource type="FontFile" uid="uid://dhuapfc16n5u1" path="res://assets/font/Comfortaa-Bold.ttf" id="3_v21ge"]
+[ext_resource type="Texture2D" uid="uid://c22kufdpjx6u8" path="res://assets/GUI/lifebar_bg_Green.png" id="4_jemlm"]
+[ext_resource type="Texture2D" uid="uid://c700mc2kx2kox" path="res://assets/GUI/lifebar_fill_Green.png" id="5_17iub"]
+[ext_resource type="Script" path="res://src/ui/Gauge.gd" id="6_xtkb2"]
+[ext_resource type="Texture2D" uid="uid://dctj3oicnchxh" path="res://assets/GUI/right-arrow.png" id="7_5d0f5"]
+[ext_resource type="Script" path="res://src/ui/HotBar.gd" id="8_4g05k"]
 
 [node name="GUI" type="MarginContainer"]
 custom_minimum_size = Vector2(1920, 1080)
@@ -37,7 +38,7 @@ size_flags_vertical = 0
 [node name="BackGround" type="NinePatchRect" parent="HBoxContainer/Bars/Bar/Count"]
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
-texture = ExtResource("1_psrlr")
+texture = ExtResource("1_o4m6q")
 
 [node name="Title" type="TextureRect" parent="HBoxContainer/Bars/Bar/Count/BackGround"]
 custom_minimum_size = Vector2(50, 40)
@@ -45,7 +46,7 @@ layout_mode = 0
 offset_left = -21.0
 offset_right = 79.0
 offset_bottom = 40.0
-texture = ExtResource("2_um1ig")
+texture = ExtResource("2_38psa")
 stretch_mode = 3
 
 [node name="Number" type="Label" parent="HBoxContainer/Bars/Bar/Count/BackGround"]
@@ -59,7 +60,7 @@ offset_right = -3.0
 offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_fonts/font = ExtResource("3_v66un")
+theme_override_fonts/font = ExtResource("3_v21ge")
 theme_override_font_sizes/font_size = 28
 text = "100"
 horizontal_alignment = 2
@@ -72,9 +73,30 @@ offset_top = -6.0
 offset_right = 497.0
 offset_bottom = 47.0
 value = 30.0
-texture_under = ExtResource("4_hwhv4")
-texture_progress = ExtResource("5_okn1n")
-script = ExtResource("6_uybis")
+texture_under = ExtResource("4_jemlm")
+texture_progress = ExtResource("5_17iub")
+script = ExtResource("6_xtkb2")
+
+[node name="Join" type="Button" parent="HBoxContainer/Bars"]
+visible = false
+layout_mode = 2
+text = "Join"
+
+[node name="Quit" type="Button" parent="HBoxContainer/Bars"]
+visible = false
+layout_mode = 2
+text = "Quit
+"
+
+[node name="CheckButton" type="CheckButton" parent="HBoxContainer/Bars"]
+visible = false
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 21
+text = "Local"
+
+[node name="HBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
 
 [node name="Counters" type="HBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
@@ -82,7 +104,38 @@ layout_mode = 2
 [node name="Right-arrow" type="Sprite2D" parent="."]
 position = Vector2(22, 1055)
 scale = Vector2(0.0898438, 0.0878908)
-texture = ExtResource("7_8ocg5")
+texture = ExtResource("7_5d0f5")
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+[node name="HotBar" type="BoxContainer" parent="."]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+script = ExtResource("8_4g05k")
+
+[node name="A1" type="Button" parent="HotBar"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 8
+toggle_mode = true
+text = "Q"
+
+[node name="A2" type="Button" parent="HotBar"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 8
+toggle_mode = true
+text = "W"
+
+[node name="A3" type="Button" parent="HotBar"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 8
+toggle_mode = true
+text = "E"
+
+[node name="A4" type="Button" parent="HotBar"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 8
+toggle_mode = true
+text = "R"

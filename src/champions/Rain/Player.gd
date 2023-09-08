@@ -40,6 +40,7 @@ func _ready():
 	floatGUI = $FloatGUI/HBoxContainer/Bars/Bar/Count/BackGround/Gauge
 	floatGUI.Player = self
 	$FloatGUI/HBoxContainer/Bars/Bar/Count/BackGround/DebugName.text = get_parent().name
+	#GUI = get_parent().get_node("GUI/HBoxContainer/Bars/Bar/Count/BackGround/Gauge")
 	GUI = get_tree().root.get_child(1).get_node("GUI/HBoxContainer/Bars/Bar/Count/BackGround/Gauge")
 func _physics_process(delta):
 	if(target != null):
