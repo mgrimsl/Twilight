@@ -1,11 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://b46k0ob7owk51"]
+[gd_scene load_steps=8 format=3 uid="uid://53c0unc20bws"]
 
-[ext_resource type="Script" path="res://src/champions/PlayerRpc.gd" id="1_so1xs"]
-[ext_resource type="PackedScene" uid="uid://d1csfuqtlnlve" path="res://src/champions/projectile.tscn" id="6_p6qi7"]
-[ext_resource type="Script" path="res://src/champions/MultiplayerSpawner.gd" id="6_slmee"]
-[ext_resource type="PackedScene" uid="uid://cmrhda4lpqeol" path="res://src/champions/Rain/Models/stylized_character.tscn" id="6_v4bpr"]
-[ext_resource type="Script" path="res://src/champions/ability.gd" id="6_xn44j"]
-[ext_resource type="PackedScene" uid="uid://h60aqkr44qp" path="res://src/ui/floatgui.tscn" id="7_ejpef"]
+[ext_resource type="Script" path="res://src/champions/PlayerRpc.gd" id="1_dh0cx"]
+[ext_resource type="PackedScene" uid="uid://cmrhda4lpqeol" path="res://src/champions/Rain/Models/stylized_character.tscn" id="3_jll1h"]
+[ext_resource type="PackedScene" uid="uid://h60aqkr44qp" path="res://src/ui/floatgui.tscn" id="4_dwc15"]
+[ext_resource type="Script" path="res://src/champions/MultiplayerSpawner.gd" id="5_q1t4l"]
+[ext_resource type="PackedScene" uid="uid://d1csfuqtlnlve" path="res://src/champions/projectile.tscn" id="6_pmf2v"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_bwobq"]
 properties/0/path = NodePath(".:position")
@@ -41,33 +40,26 @@ properties/7/spawn = true
 properties/7/sync = true
 properties/7/watch = false
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1wq27"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_885ba"]
 
-[node name="PlayerRpc" type="Node3D"]
-script = ExtResource("1_so1xs")
+[node name="Champion" type="CharacterBody3D"]
+script = ExtResource("1_dh0cx")
 
-[node name="StylizedCharacter" parent="." instance=ExtResource("6_v4bpr")]
+[node name="StylizedCharacter" parent="." instance=ExtResource("3_jll1h")]
 
-[node name="FloatGUI" parent="." instance=ExtResource("7_ejpef")]
-anchors_preset = 0
-anchor_right = 0.0
-offset_right = 521.0
-grow_horizontal = 1
-scale = Vector2(0.4, 0.4)
+[node name="FloatGUI" parent="." instance=ExtResource("4_dwc15")]
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_bwobq")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 spawn_path = NodePath("..")
-script = ExtResource("6_slmee")
-projectile = ExtResource("6_p6qi7")
+script = ExtResource("5_q1t4l")
+projectile = ExtResource("6_pmf2v")
 
 [node name="A1" type="Node3D" parent="."]
-script = ExtResource("6_xn44j")
 
 [node name="A2" type="Node3D" parent="."]
-script = ExtResource("6_xn44j")
 
 [node name="A3" type="Node3D" parent="."]
 
@@ -76,8 +68,8 @@ script = ExtResource("6_xn44j")
 [node name="AA" type="Node3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("CapsuleShape3D_1wq27")
+shape = SubResource("CapsuleShape3D_885ba")
 
-[connection signal="MouseEntered" from="." to="." method="_on_mouse_entered"]
-[connection signal="MouseExited" from="." to="." method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="despawned" from="MultiplayerSpawner" to="MultiplayerSpawner" method="_on_despawned"]

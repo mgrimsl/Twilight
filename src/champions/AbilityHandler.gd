@@ -1,5 +1,6 @@
 extends Node
 var Ability = preload("res://src/champions/Rain/Abilities/Ability.tscn")
+var arrow = preload("res://assets/champions/robbin/arrow.glb")
 var ability
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -8,6 +9,7 @@ func _ready():
 
 @rpc() func cooldown(title, timeleft, timeout = false):
 	if timeout:
+		print("yes")
 		var txt = ""
 		match title:
 			"AA":
@@ -28,14 +30,15 @@ func _ready():
 	get_node("/root/Global").hotBar.get_node(title).text = str(timeleft)
 
 
-@rpc() func spawnAbility(title, nodeName, size, length, width):
+@rpc() func spawnAbility(title, nodeName, target):
 	ability = Ability.instantiate()
 	ability.name = nodeName
-	ability.visible = false
-	#ability.scale = Vector3(size,size,size)
+	#ability.visible = false
+	ability.position = get_parent().get_node("Player").position
 	add_child(ability, true)
 	ability = get_node(str(ability.name))
-	print(title)
+
+func createMesh(length , width, title):
 	var meshInstance = ability.get_node("MeshInstance3D")
 	setMeshSize(length, width)
 	var mat = StandardMaterial3D.new()
@@ -53,7 +56,8 @@ func _ready():
 			mat.albedo_color = Color(50,0,50)
 		"A4":
 			mat.albedo_color = Color(50,50,0)
-	meshInstance.set_surface_override_material(0,mat)
+	#meshInstance.set_surface_override_material(0,mat)
+	#meshInstance.mesh = arrow
 	
 func setMeshSize(length, width):
 	if length > 0 && width > 0:

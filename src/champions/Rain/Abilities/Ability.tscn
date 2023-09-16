@@ -1,18 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://fgys2e0sr01a"]
+[gd_scene load_steps=2 format=3 uid="uid://fgys2e0sr01a"]
 
-[ext_resource type="Script" path="res://src/champions/Rain/Abilities/Ability.gd" id="1_2ub07"]
+[ext_resource type="Script" path="res://src/champions/Rain/Abilities/AbilityOLD.gd" id="1_tquwg"]
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_5qc8r"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rre2l"]
-albedo_color = Color(0.847059, 0.752941, 0.211765, 1)
-
-[node name="Ability" type="Area3D"]
-script = ExtResource("1_2ub07")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("PlaneMesh_5qc8r")
-surface_material_override/0 = SubResource("StandardMaterial3D_rre2l")
-
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
-[connection signal="hit" from="." to="." method="_on_hit"]
+[node name="Ability" type="Node3D"]
+script = ExtResource("1_tquwg")

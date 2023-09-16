@@ -3,41 +3,43 @@ extends Node
 var target = null
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	print(multiplayer.get_unique_id())
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
-	var mouse = $"../Map/Ground".mouse
+
+func _input(event):
+	var aMouse = $"../Map/Ground".aMouse
+	var gMouse = $"../Map/Ground".gMouse
 	var input = ""
 	var keyReleased = false
-	if Input.is_action_just_pressed("Ability1"):
-		input = "Ability1"
-	if Input.is_action_just_pressed("Ability2"):
-		input = "Ability2"
-	if Input.is_action_just_pressed("Ability3"):
-		input = "Ability3"
-	if Input.is_action_just_pressed("Ability4"):
-		input = "Ability4"
+	if Input.is_action_just_pressed("A1"):
+		input = "A1"
+	if Input.is_action_just_pressed("A2"):
+		input = "A2"
+	if Input.is_action_just_pressed("A3"):
+		input = "A3"
+	if Input.is_action_just_pressed("A4"):
+		input = "A4"
 	if Input.is_action_just_pressed("Right-Click"):
 		input = "Right-Click"
 	if Input.is_action_just_pressed("Click"):
 		pass
-	if Input.is_action_just_released("Ability1"):
+	if Input.is_action_just_released("A1"):
 		keyReleased = true
-		input = "Ability1"
-	if Input.is_action_just_released("Ability2"):
+		input = "A1"
+	if Input.is_action_just_released("A2"):
 		keyReleased = true
-		input = "Ability2"
-	if Input.is_action_just_released("Ability3"):
+		input = "A2"
+	if Input.is_action_just_released("A3"):
 		keyReleased = true
-		input = "Ability3"
-	if Input.is_action_just_released("Ability4"):
+		input = "A3"
+	if Input.is_action_just_released("A4"):
 		keyReleased = true
-		input = "Ability4"
+		input = "A4"
 	if !multiplayer.is_server():
-		rpc_id(1,"input", input, mouse, keyReleased, target)
+		rpc_id(1,"input", input, aMouse, gMouse, keyReleased, target)
 
 
-@rpc() func input(input, mouse,keyReleased, target = null):
+@rpc() func input(input, aMouse, gMouse, keyReleased, target = null):
 	pass

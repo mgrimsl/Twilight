@@ -1,10 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://b46k0ob7owk51"]
+[gd_scene load_steps=8 format=3 uid="uid://b46k0ob7owk51"]
 
 [ext_resource type="Script" path="res://src/champions/PlayerRpc.gd" id="1_so1xs"]
+[ext_resource type="Script" path="res://src/champions/AbilityHandler.gd" id="3_yf3xh"]
 [ext_resource type="PackedScene" uid="uid://d1csfuqtlnlve" path="res://src/champions/projectile.tscn" id="6_p6qi7"]
 [ext_resource type="Script" path="res://src/champions/MultiplayerSpawner.gd" id="6_slmee"]
 [ext_resource type="PackedScene" uid="uid://cmrhda4lpqeol" path="res://src/champions/Rain/Models/stylized_character.tscn" id="6_v4bpr"]
-[ext_resource type="Script" path="res://src/champions/ability.gd" id="6_xn44j"]
 [ext_resource type="PackedScene" uid="uid://h60aqkr44qp" path="res://src/ui/floatgui.tscn" id="7_ejpef"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_bwobq"]
@@ -41,10 +41,11 @@ properties/7/spawn = true
 properties/7/sync = true
 properties/7/watch = false
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1wq27"]
-
 [node name="PlayerRpc" type="Node3D"]
 script = ExtResource("1_so1xs")
+
+[node name="AbilityHandler" type="Node" parent="."]
+script = ExtResource("3_yf3xh")
 
 [node name="StylizedCharacter" parent="." instance=ExtResource("6_v4bpr")]
 
@@ -64,20 +65,7 @@ script = ExtResource("6_slmee")
 projectile = ExtResource("6_p6qi7")
 
 [node name="A1" type="Node3D" parent="."]
-script = ExtResource("6_xn44j")
 
 [node name="A2" type="Node3D" parent="."]
-script = ExtResource("6_xn44j")
 
-[node name="A3" type="Node3D" parent="."]
-
-[node name="A4" type="Node3D" parent="."]
-
-[node name="AA" type="Node3D" parent="."]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("CapsuleShape3D_1wq27")
-
-[connection signal="MouseEntered" from="." to="." method="_on_mouse_entered"]
-[connection signal="MouseExited" from="." to="." method="_on_mouse_exited"]
 [connection signal="despawned" from="MultiplayerSpawner" to="MultiplayerSpawner" method="_on_despawned"]

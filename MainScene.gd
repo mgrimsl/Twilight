@@ -48,10 +48,9 @@ func _register_player(id):
 	var player = player_scene.instantiate()
 	player.name = str(id)
 	$PlayersMan.add_child(player)
-	$GUI/HBoxContainer/Bars/Bar/Count/BackGround/Gauge.Player = player
+	#$GUI/HBoxContainer/Bars/Bar/Count/BackGround/Gauge.Player = player
 
 @rpc("reliable") func _del_player(id):
-	print("remote sender: ", multiplayer.get_remote_sender_id(), " wants to delte id: ", id)
 	$PlayersMan.get_node(str(id)).queue_free()
 	
 func _on_join_pressed():
@@ -71,7 +70,6 @@ func _on_quit_pressed():
 	$GUI/HBoxContainer/Bars/Quit.visible = false
 
 func _on_peer_connected(id):
-	print("peer connected id: ", id, " my name is : ", get_multiplayer_authority())
 	if(id != 1):
 		_register_player(id)
 	

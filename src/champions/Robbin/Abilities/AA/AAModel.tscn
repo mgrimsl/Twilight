@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dd41y1jouompv"]
+
+[ext_resource type="Texture2D" uid="uid://kf8hxi3ywbeg" path="res://assets/champions/robbin/A1.png" id="1_x5npk"]
+
+[node name="A1Model" type="Sprite3D"]
+transform = Transform3D(0.5, 0, 0, 0, -2.18557e-08, 0.5, 0, -0.5, -2.18557e-08, 0, 0, 0)
+texture = ExtResource("1_x5npk")

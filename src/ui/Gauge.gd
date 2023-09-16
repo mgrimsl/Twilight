@@ -13,13 +13,16 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	max_value = maxHealth
+	if(Player == null):
+		return
+	
+	maxHealth = Player.maxHealth
+	currentHealth = Player.currentHealth
 	value = currentHealth
+	max_value = maxHealth
 
 	$"../Number".text = "%0.0f" %currentHealth
-	#if value <= 0:
-	#	currentHealth = maxHealth
-	#	$"../Number".text = "%0.0f" %currentHealth
+
 
 func setHP(max, current):
 	maxHealth = max

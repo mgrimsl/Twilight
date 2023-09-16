@@ -18,7 +18,6 @@ var locked = true
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	size = get_viewport().get_visible_rect().size
-	print(size)
 	leftBound = size.x * .10
 	rightBound = size.x - leftBound
 	topBound = size.y * .10

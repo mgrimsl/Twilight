@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://d1csfuqtlnlve"]
+
+[ext_resource type="Script" path="res://src/champions/projectile.gd" id="1_ktcwx"]
+[ext_resource type="Script" path="res://src/champions/Rain/Abilities/trail.gd" id="1_qt5hi"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v3f3l"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_u4jeo"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/sync = true
+properties/1/watch = false
+properties/2/path = NodePath(".:top_level")
+properties/2/spawn = true
+properties/2/sync = false
+properties/2/watch = false
+
+[node name="Projectile" type="Node3D"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+script = ExtResource("1_ktcwx")
+
+[node name="Trail3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.016489, 1.22594)
+material_override = SubResource("StandardMaterial3D_v3f3l")
+skeleton = NodePath("../..")
+script = ExtResource("1_qt5hi")
+_from = 0.1
+_to = 0.01
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_u4jeo")

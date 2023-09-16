@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://r7c78l2m0pwd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ij31g"]
+shading_mode = 0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_gl7a0"]
+material = SubResource("StandardMaterial3D_ij31g")
+radius = 0.02
+
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_6b55t"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 0, 0, 0.662745)
+
+[sub_resource type="TorusMesh" id="TorusMesh_cnhce"]
+material = SubResource("ORMMaterial3D_6b55t")
+inner_radius = 6.4
+outer_radius = 6.5
+rings = 100
+ring_segments = 3
+
+[node name="A4" type="Sprite3D"]
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="."]
+transform = Transform3D(-0.979498, -0.00364947, 0.201421, 0, -0.999836, -0.0181156, 0.201454, -0.0177442, 0.979337, 0, 17.4284, 0)
+amount = 32
+mesh = SubResource("CapsuleMesh_gl7a0")
+emission_shape = 2
+emission_sphere_radius = 6.0
+gravity = Vector3(0, -500, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("TorusMesh_cnhce")
